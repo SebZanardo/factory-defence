@@ -36,7 +36,8 @@ elif [ $1 = $MACOS ]; then
 
 elif [ $1 = $WINDOWS ]; then
     # https://github.com/raysan5/raylib/wiki/Working-on-Windows
-    gcc src/main.c -lraylib -lgdi32 -lwinmm -o game.exe
+    # + added -L lib
+    gcc src/main.c -L lib -lraylib -lgdi32 -lwinmm -o game.exe
 
 elif [ $1 = $WEB ]; then
     if [ -z "$EMSDK" ]; then

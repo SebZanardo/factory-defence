@@ -1,12 +1,15 @@
+raylib.h
+raymath.h
+rlgl.h
+libraylib.a
+lib/
+
 # Web specific
 web/
 *.zip
 
 # MacOS specific
 .DS_Store
-raylib.h
-raymath.h
-rlgl.h
 
 # Prerequisites
 *.d
