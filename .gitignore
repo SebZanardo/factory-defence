@@ -4,6 +4,9 @@ rlgl.h
 libraylib.a
 lib/
 
+# VScode
+.vscode/
+
 # Web specific
 web/
 *.zip
