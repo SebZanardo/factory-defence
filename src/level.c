@@ -5,7 +5,7 @@
 #include "building.h"
 
 
-Level level = {};
+Level level;
 
 
 int initialise_level(int width, int height) {
