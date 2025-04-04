@@ -12,11 +12,14 @@
 
 
 // NOTE: These shouldn't be constants when we have multiple maps
+/*NOTE: ints with constant qualifiers here must be defined with constants so
+defining HALF_CELL_WIDTH based on CELL_WIDTH is inproper*/
+
 const int MAX_CELLS = MAP_WIDTH * MAP_HEIGHT;
 const int CELL_WIDTH = SCREEN_WIDTH / MAP_WIDTH;
 const int CELL_HEIGHT = SCREEN_HEIGHT / MAP_HEIGHT;
-const int HALF_CELL_WIDTH = CELL_WIDTH / 2;
-const int HALF_CELL_HEIGHT = CELL_HEIGHT / 2;
+const int HALF_CELL_WIDTH = SCREEN_WIDTH / MAP_WIDTH / 2;
+const int HALF_CELL_HEIGHT = SCREEN_HEIGHT / MAP_HEIGHT / 2;
 
 
 typedef enum {
