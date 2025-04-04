@@ -8,12 +8,11 @@
 
 
 int main(void) {
+    // TODO: Move map loading into level.c and from file
     if (initialise_level(20, 9) != 0) {
-        printf("Failed to initialise level\n");
+        printf("ERROR: Failed to initialise level\n");
         return 1;
     }
-
-    // TODO: Move map loading into level.c and from file
     for (int y = 0; y < level.MAP_HEIGHT; y++) {
         for (int x = 0; x < level.MAP_WIDTH; x++) {
             int cell = to_cell(x, y);
@@ -25,17 +24,19 @@ int main(void) {
     InitWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "factory-defence");
 
     while (!WindowShouldClose()) {
+        // INPUT
         Vector2 mouse_position = GetMousePosition();
         int cell_x = mouse_position.x/level.CELL_WIDTH;
         int cell_y = mouse_position.y/level.CELL_HEIGHT;
-        if (IsMouseButtonPressed(0)) {
-            place_building(BELT, cell_x, cell_y);
-        }
-        if (IsMouseButtonPressed(1)) {
-            delete_building(cell_x, cell_y);
+
+        // UPDATE
+        if (inside_level(cell_x, cell_y)) {
+            int cell = to_cell(cell_x, cell_y);
+            if (IsMouseButtonDown(0)) place_building(BELT, cell);
+            if (IsMouseButtonDown(1)) delete_building(cell);
         }
 
-        // RENDERING
+        // RENDER
         BeginDrawing();
         ClearBackground(BLACK);
         for (int y = 0; y < level.MAP_HEIGHT; y++) {
@@ -59,8 +60,10 @@ int main(void) {
                 }
             }
         }
+        DrawFPS(0, 0);
         EndDrawing();
     }
     CloseWindow();
+
     free_level();
 }

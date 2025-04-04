@@ -2,9 +2,6 @@
 #define BUILDING_H
 
 
-static const int EMPTY_PLACEMENT = -1;
-
-
 typedef enum {
     NORTH,
     EAST,
@@ -27,8 +24,8 @@ typedef struct {
 } Building;
 
 
-void place_building(BuildingType type, int x, int y);
-void delete_building(int x, int y);
+void place_building(BuildingType type, int cell);
+void delete_building(int cell);
 
 
 #endif  /* BUILDING_H */

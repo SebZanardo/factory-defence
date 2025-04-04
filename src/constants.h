@@ -2,8 +2,10 @@
 #define CONSTANT_H
 
 
-static const int SCREEN_WIDTH = 1280;
-static const int SCREEN_HEIGHT = 720;
+#define SCREEN_WIDTH 1280
+#define SCREEN_HEIGHT 720
+
+#define EMPTY_PLACEMENT -1
 
 
 #endif /* CONSTANT_H */

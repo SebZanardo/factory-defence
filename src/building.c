@@ -1,16 +1,16 @@
+#include "constants.h"
 #include "level.h"
 #include "building.h"
 
 
+// NOTE: Both these functions assume that the cell is inside the level
+
 // TODO:
 // - Add rotation
 // - Add placement of different sized buildings
-void place_building(BuildingType type, int x, int y) {
-    if (!inside_level(x, y)) return;
-
-    // TODO: Check if ground is correct type and free for all cells in building
-    if (level.terrain[to_cell(x, y)] != GROUND) return;
-    if (level.placement[to_cell(x, y)] != -1) return;
+void place_building(BuildingType type, int cell) {
+    if (level.terrain[cell] != GROUND) return;
+    if (level.placement[cell] != -1) return;
 
     // Find first opening in list
     int i;
@@ -22,15 +22,13 @@ void place_building(BuildingType type, int x, int y) {
 
     level.buildings[i] = (Building) { BELT, NORTH };
 
-    // TODO: For all cells in building
-    level.placement[to_cell(x, y)] = i;
+    level.placement[cell] = i;
 }
 
-void delete_building(int x, int y) {
-    if (!inside_level(x, y)) return;
-    if (level.terrain[to_cell(x, y)] != GROUND) return;
+void delete_building(int cell) {
+    if (level.terrain[cell] != GROUND) return;
 
-    int i = level.placement[to_cell(x, y)];
+    int i = level.placement[cell];
     level.buildings[i].type = NONE;
-    level.placement[to_cell(x, y)] = EMPTY_PLACEMENT;
+    level.placement[cell] = EMPTY_PLACEMENT;
 }
