@@ -50,3 +50,8 @@ int inside_level(int x, int y) {
 int to_cell(int x, int y) {
     return y * level.MAP_WIDTH + x;
 }
+
+void to_coord(int cell, int *x, int *y) {
+    *y = cell / level.MAP_WIDTH;
+    *x = cell % level.MAP_WIDTH;
+}

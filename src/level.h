@@ -33,6 +33,7 @@ int initialise_level(int width, int height);
 void free_level(void);
 int inside_level(int x, int y);
 int to_cell(int x, int y);
+void to_coord(int cell, int *x, int *y);
 
 
 #endif  /* LEVEL_H */
