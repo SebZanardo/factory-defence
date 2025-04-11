@@ -6,8 +6,13 @@
 
 
 int main(void) {
-    int selected = BELT;
+    //Setting up the tick system TODO: make changing speed controls
+    int frame_count = 0;
+    int tick_tps = 8;
+    SetTargetFPS(MAX_FPS);
 
+
+    int selected = BELT;
     // TODO: Move map loading into level.c and from file
     if (initialise_level(20, 9) != 0) {
         printf("ERROR: Failed to initialise level\n");
@@ -24,6 +29,7 @@ int main(void) {
     InitWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "factory-defence");
 
     while (!WindowShouldClose()) {
+        
         // INPUT
         Vector2 mouse_position = GetMousePosition();
         float scroll = GetMouseWheelMove();
@@ -45,33 +51,41 @@ int main(void) {
             if (IsMouseButtonDown(1)) delete_building(cell);
         }
 
-        // RENDER
-        BeginDrawing();
-        ClearBackground(BLACK);
-        for (int y = 0; y < level.MAP_HEIGHT; y++) {
-            for (int x = 0; x < level.MAP_WIDTH; x++) {
-                Rectangle rect = {
-                    x * level.CELL_WIDTH,
-                    y * level.CELL_HEIGHT,
-                    level.CELL_WIDTH,
-                    level.CELL_HEIGHT
-                };
-                Color colour = (x + y) % 2 == 0 ? GRAY : DARKGRAY;
-                DrawRectangleRec(rect, colour);
+        //UPDATE GAME
+        if (frame_count%(MAX_FPS/tick_tps)==0) {
+            //Stuff would go here. Eg Update building items function.
+        }
 
-                if (level.placement[to_cell(x, y)] != EMPTY_PLACEMENT) {
-                    DrawCircle(
-                        x * level.CELL_WIDTH + level.HALF_CELL_WIDTH,
-                        y * level.CELL_HEIGHT + level.HALF_CELL_HEIGHT,
-                        20,
-                        MAGENTA
-                    );
+        // RENDER
+        if (frame_count%(MAX_FPS/RENDER_RATE)==0) {
+            BeginDrawing();
+            ClearBackground(BLACK);
+            for (int y = 0; y < level.MAP_HEIGHT; y++) {
+                for (int x = 0; x < level.MAP_WIDTH; x++) {
+                    Rectangle rect = {
+                        x * level.CELL_WIDTH,
+                        y * level.CELL_HEIGHT,
+                        level.CELL_WIDTH,
+                        level.CELL_HEIGHT
+                    };
+                    Color colour = (x + y) % 2 == 0 ? GRAY : DARKGRAY;
+                    DrawRectangleRec(rect, colour);
+
+                    if (level.placement[to_cell(x, y)] != EMPTY_PLACEMENT) {
+                        DrawCircle(
+                            x * level.CELL_WIDTH + level.HALF_CELL_WIDTH,
+                            y * level.CELL_HEIGHT + level.HALF_CELL_HEIGHT,
+                            20,
+                            MAGENTA
+                        );
+                    }
                 }
             }
+            DrawFPS(0, 0);
+            DrawText(building_name[selected], 0, 20, 20, MAGENTA);
+            EndDrawing();
         }
-        DrawFPS(0, 0);
-        DrawText(building_name[selected], 0, 20, 20, MAGENTA);
-        EndDrawing();
+        frame_count += 1;
     }
     CloseWindow();
 
