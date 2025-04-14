@@ -53,7 +53,11 @@ int main(void) {
 
         //UPDATE GAME
         if (frame_count%(MAX_FPS/tick_tps)==0) {
-            //Stuff would go here. Eg Update building items function.
+            for (int index = 0; index < level.MAX_CELLS; index++) {
+                if (level.buildings[index].type != NONE) {
+                    //Update the building by counting items down by one and applying effects.
+                }
+            }
         }
 
         // RENDER

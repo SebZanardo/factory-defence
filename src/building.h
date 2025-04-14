@@ -25,11 +25,24 @@ typedef enum {
     POWER,
 } BuildingType;
 
+typedef enum {
+    NOTHING,
+    COPPER_ORE,
+    IRON_ORE,
+    COPPER,
+    IRON,
+} ItemType;
+
+typedef struct {
+    ItemType type;
+    int counter; 
+} Item;
 
 typedef struct {
     Vector2 origin;
     BuildingType type;
     Direction dir;
+    Item item_list[8];
 } Building;
 
 typedef struct {

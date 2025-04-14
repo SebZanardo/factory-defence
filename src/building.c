@@ -49,7 +49,7 @@ void place_building(BuildingType type, int cell) {
 
         level.placement[new_cell] = index;
     }
-    level.buildings[index] = (Building) { (Vector2){x, y}, type, NORTH };
+    level.buildings[index] = (Building) { (Vector2){x, y}, type, NORTH};
 }
 
 void delete_building(int cell) {
@@ -69,3 +69,32 @@ void delete_building(int cell) {
     }
     level.buildings[index].type = NONE;
 }
+
+//TODO: These functions will use the space of the itemlist in building but 8 is the standin 
+int get_number_of_nothings(Building building) {
+    int amount = 0;
+    for (int i=0; i<8; i++) {
+        if (building.item_list[i].type == NOTHING) {
+            amount += 1;
+        }
+    }
+    return amount;
+}
+
+void countdown_items(Building building) {
+    for (int i=0; i<8; i++) {
+        if (building.item_list[i].type != NOTHING && building.item_list[i].counter > 0) {
+            building.item_list[i].counter -= 1;
+        }
+    }
+}
+
+void add_item(Building building, Item item) {
+    for (int i=0; i<8; i++) {
+        if (building.item_list[i].type == NOTHING) {
+            building.item_list[i] = item;
+            break;
+        }
+    }
+}
+
