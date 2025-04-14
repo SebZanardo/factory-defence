@@ -63,7 +63,7 @@ static const char *building_name[] = {
 };
 
 
-void place_building(BuildingType type, int cell);
+void place_building(BuildingType type, int cell, Direction dir);
 void delete_building(int cell);
 
 

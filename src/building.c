@@ -15,7 +15,7 @@ Plan building_plan[] = {
 
 
 // TODO: Rotation
-void place_building(BuildingType type, int cell) {
+void place_building(BuildingType type, int cell, Direction dir) {
     // Check if can be placed
     int x, y;
     to_coord(cell, &x, &y);
@@ -49,7 +49,7 @@ void place_building(BuildingType type, int cell) {
 
         level.placement[new_cell] = index;
     }
-    level.buildings[index] = (Building) { (Vector2){x, y}, type, NORTH};
+    level.buildings[index] = (Building) { (Vector2){x, y}, type, dir};
 }
 
 void delete_building(int cell) {

@@ -13,6 +13,8 @@ int main(void) {
 
 
     int selected = BELT;
+    Direction dir = NORTH;
+
     // TODO: Move map loading into level.c and from file
     if (initialise_level(20, 9) != 0) {
         printf("ERROR: Failed to initialise level\n");
@@ -34,7 +36,7 @@ int main(void) {
         Vector2 mouse_position = GetMousePosition();
         float scroll = GetMouseWheelMove();
 
-        // UPDATE
+        // UPDATE building type and rotation
         if (scroll > 0) {
             selected++;
             if (selected >= BUILDING_TYPES) selected = 0;
@@ -43,11 +45,20 @@ int main(void) {
             if (selected < 0) selected = BUILDING_TYPES - 1;
         }
 
+        //TODO: NEED TO FIX THIS. the iskeypressed triggers 4 times for some reason idk.
+        if (IsKeyPressed(KEY_R) && frame_count%4==0) {
+            dir += 1;
+            if (dir == 4) {
+                dir = 0;
+            }
+            printf("%d at %d.\n", dir, frame_count);
+        }
+
         int cell_x = mouse_position.x/level.CELL_WIDTH;
         int cell_y = mouse_position.y/level.CELL_HEIGHT;
         if (inside_level(cell_x, cell_y)) {
             int cell = to_cell(cell_x, cell_y);
-            if (IsMouseButtonDown(0)) place_building(selected, cell);
+            if (IsMouseButtonDown(0)) place_building(selected, cell, dir);
             if (IsMouseButtonDown(1)) delete_building(cell);
         }
 
@@ -81,6 +92,33 @@ int main(void) {
                             y * level.CELL_HEIGHT + level.HALF_CELL_HEIGHT,
                             20,
                             MAGENTA
+                        );
+                        int temp_x;
+                        int temp_y;
+                        switch (level.buildings[level.placement[to_cell(x, y)]].dir)
+                        {
+                        case 0:
+                            temp_x = 0;
+                            temp_y = -1;
+                            break;
+                        case 1:
+                            temp_x = 1;
+                            temp_y = 0;
+                            break;
+                        case 2:
+                            temp_x = 0;
+                            temp_y = 1;
+                            break;
+                        case 3:
+                            temp_x = -1;
+                            temp_y = 0;
+                            break;
+                        }
+                        DrawCircle(
+                            x * level.CELL_WIDTH + level.HALF_CELL_WIDTH*(2+temp_x)/2,
+                            y * level.CELL_HEIGHT + level.HALF_CELL_HEIGHT*(2+temp_y)/2,
+                            10,
+                            BLUE
                         );
                     }
                 }
