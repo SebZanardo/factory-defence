@@ -6,7 +6,8 @@
 
 
 int main(void) {
-    //Setting up the tick system TODO: make changing speed controls
+    // Setting up the tick system
+    // TODO: Make changing speed controls
     int frame_count = 0;
     int tick_tps = 8;
     SetTargetFPS(MAX_FPS);
@@ -31,7 +32,6 @@ int main(void) {
     InitWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "factory-defence");
 
     while (!WindowShouldClose()) {
-        
         // INPUT
         Vector2 mouse_position = GetMousePosition();
         float scroll = GetMouseWheelMove();
@@ -45,12 +45,9 @@ int main(void) {
             if (selected < 0) selected = BUILDING_TYPES - 1;
         }
 
-        //TODO: NEED TO FIX THIS. the iskeypressed triggers 4 times for some reason idk.
-        if (IsKeyPressed(KEY_R) && frame_count%4==0) {
-            dir += 1;
-            if (dir == 4) {
-                dir = 0;
-            }
+        if (IsKeyPressed(KEY_R)) {
+            dir ++;
+            if (dir >= 4) dir = 0;
             printf("%d at %d.\n", dir, frame_count);
         }
 
@@ -72,61 +69,59 @@ int main(void) {
         }
 
         // RENDER
-        if (frame_count%(MAX_FPS/RENDER_RATE)==0) {
-            BeginDrawing();
-            ClearBackground(BLACK);
-            for (int y = 0; y < level.MAP_HEIGHT; y++) {
-                for (int x = 0; x < level.MAP_WIDTH; x++) {
-                    Rectangle rect = {
-                        x * level.CELL_WIDTH,
-                        y * level.CELL_HEIGHT,
-                        level.CELL_WIDTH,
-                        level.CELL_HEIGHT
-                    };
-                    Color colour = (x + y) % 2 == 0 ? GRAY : DARKGRAY;
-                    DrawRectangleRec(rect, colour);
+        BeginDrawing();
+        ClearBackground(BLACK);
+        for (int y = 0; y < level.MAP_HEIGHT; y++) {
+            for (int x = 0; x < level.MAP_WIDTH; x++) {
+                Rectangle rect = {
+                    x * level.CELL_WIDTH,
+                    y * level.CELL_HEIGHT,
+                    level.CELL_WIDTH,
+                    level.CELL_HEIGHT
+                };
+                Color colour = (x + y) % 2 == 0 ? GRAY : DARKGRAY;
+                DrawRectangleRec(rect, colour);
 
-                    if (level.placement[to_cell(x, y)] != EMPTY_PLACEMENT) {
-                        DrawCircle(
-                            x * level.CELL_WIDTH + level.HALF_CELL_WIDTH,
-                            y * level.CELL_HEIGHT + level.HALF_CELL_HEIGHT,
-                            20,
-                            MAGENTA
-                        );
-                        int temp_x;
-                        int temp_y;
-                        switch (level.buildings[level.placement[to_cell(x, y)]].dir)
-                        {
-                        case 0:
-                            temp_x = 0;
-                            temp_y = -1;
-                            break;
-                        case 1:
-                            temp_x = 1;
-                            temp_y = 0;
-                            break;
-                        case 2:
-                            temp_x = 0;
-                            temp_y = 1;
-                            break;
-                        case 3:
-                            temp_x = -1;
-                            temp_y = 0;
-                            break;
-                        }
-                        DrawCircle(
-                            x * level.CELL_WIDTH + level.HALF_CELL_WIDTH*(2+temp_x)/2,
-                            y * level.CELL_HEIGHT + level.HALF_CELL_HEIGHT*(2+temp_y)/2,
-                            10,
-                            BLUE
-                        );
+                if (level.placement[to_cell(x, y)] != EMPTY_PLACEMENT) {
+                    DrawCircle(
+                        x * level.CELL_WIDTH + level.HALF_CELL_WIDTH,
+                        y * level.CELL_HEIGHT + level.HALF_CELL_HEIGHT,
+                        20,
+                        MAGENTA
+                    );
+                    int temp_x;
+                    int temp_y;
+                    switch (level.buildings[level.placement[to_cell(x, y)]].dir)
+                    {
+                    case 0:
+                        temp_x = 0;
+                        temp_y = -1;
+                        break;
+                    case 1:
+                        temp_x = 1;
+                        temp_y = 0;
+                        break;
+                    case 2:
+                        temp_x = 0;
+                        temp_y = 1;
+                        break;
+                    case 3:
+                        temp_x = -1;
+                        temp_y = 0;
+                        break;
                     }
+                    DrawCircle(
+                        x * level.CELL_WIDTH + level.HALF_CELL_WIDTH*(2+temp_x)/2,
+                        y * level.CELL_HEIGHT + level.HALF_CELL_HEIGHT*(2+temp_y)/2,
+                        10,
+                        BLUE
+                    );
                 }
             }
-            DrawFPS(0, 0);
-            DrawText(building_name[selected], 0, 20, 20, MAGENTA);
-            EndDrawing();
         }
+        DrawFPS(0, 0);
+        DrawText(building_name[selected], 0, 20, 20, MAGENTA);
+        EndDrawing();
         frame_count += 1;
     }
     CloseWindow();
