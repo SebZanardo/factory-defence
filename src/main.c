@@ -20,17 +20,19 @@ int main(void) {
         return 1;
     }
 
+    Queue_init(&queue, level.MAX_CELLS);
+    // Clear placement map
+    // TODO: Use better data types like bool and make EMPTY_PLACEMENT UINT8_MAX
+    for (int i = 0; i < level.MAX_CELLS; i++) {
+        level.placement[i] = EMPTY_PLACEMENT;
+    }
+
     if (load_level("src/resources/demo.txt") != 0) {
         printf("ERROR: Failed to load level\n");
         return 1;
     }
+    place_path();
 
-    for (int y = 0; y < level.MAP_HEIGHT; y++) {
-        for (int x = 0; x < level.MAP_WIDTH; x++) {
-            int cell = to_cell(x, y);
-            level.placement[cell] = EMPTY_PLACEMENT;
-        }
-    }
     Color colour;
     InitWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "factory-defence");
 
