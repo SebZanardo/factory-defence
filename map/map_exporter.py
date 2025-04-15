@@ -5,7 +5,7 @@ from PIL import Image
 
 # NOTE: Should match level.h TileType
 class TileType(IntEnum):
-    EMPTY = auto()
+    EMPTY = 0
     GROUND = auto()
     WATER = auto()
     PATH = auto()
@@ -50,7 +50,7 @@ def main() -> None:
     # Write output file
     with open(output_path, "w") as f:
         for y in range(image.height):
-            f.write(", ".join(map[y]) + '\n')
+            f.write(" ".join(map[y]) + '\n')
 
 
 if __name__ == "__main__":

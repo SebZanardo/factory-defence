@@ -12,23 +12,26 @@ int main(void) {
     int tick_tps = 8;
     SetTargetFPS(MAX_FPS);
 
-
     int selected = BELT;
     Direction dir = NORTH;
 
-    // TODO: Move map loading into level.c and from file
-    if (initialise_level(20, 9) != 0) {
+    if (initialise_level(32, 16) != 0) {
         printf("ERROR: Failed to initialise level\n");
         return 1;
     }
+
+    if (load_level("src/resources/demo.txt") != 0) {
+        printf("ERROR: Failed to load level\n");
+        return 1;
+    }
+
     for (int y = 0; y < level.MAP_HEIGHT; y++) {
         for (int x = 0; x < level.MAP_WIDTH; x++) {
             int cell = to_cell(x, y);
-            level.terrain[cell] = GROUND;
             level.placement[cell] = EMPTY_PLACEMENT;
         }
     }
-
+    Color colour;
     InitWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "factory-defence");
 
     while (!WindowShouldClose()) {
@@ -73,15 +76,39 @@ int main(void) {
         ClearBackground(BLACK);
         for (int y = 0; y < level.MAP_HEIGHT; y++) {
             for (int x = 0; x < level.MAP_WIDTH; x++) {
+
+                // Draw tile
                 Rectangle rect = {
                     x * level.CELL_WIDTH,
                     y * level.CELL_HEIGHT,
                     level.CELL_WIDTH,
                     level.CELL_HEIGHT
                 };
-                Color colour = (x + y) % 2 == 0 ? GRAY : DARKGRAY;
+
+                switch (level.terrain[to_cell(x, y)]) {
+                    case EMPTY:
+                        colour = BLACK;
+                        break;
+                    case GROUND:
+                        colour = (x + y) % 2 == 0 ? GRAY : DARKGRAY;
+                        break;
+                    case WATER:
+                        colour = BLUE;
+                        break;
+                    case PATH:
+                        colour = MAGENTA;
+                        break;
+                    case PATH_INPUT:
+                        colour = RED;
+                        break;
+                    case PATH_OUTPUT:
+                        colour = GREEN;
+                        break;
+                }
+
                 DrawRectangleRec(rect, colour);
 
+                // Draw building
                 if (level.placement[to_cell(x, y)] != EMPTY_PLACEMENT) {
                     DrawCircle(
                         x * level.CELL_WIDTH + level.HALF_CELL_WIDTH,

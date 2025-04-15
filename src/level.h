@@ -10,6 +10,8 @@ typedef enum {
     GROUND,
     WATER,
     PATH,
+    PATH_INPUT,
+    PATH_OUTPUT,
 } TileType;
 
 typedef struct {
@@ -31,6 +33,7 @@ extern Level level;
 
 int initialise_level(int width, int height);
 void free_level(void);
+int load_level(char level_path[]);
 int inside_level(int x, int y);
 int to_cell(int x, int y);
 void to_coord(int cell, int *x, int *y);
