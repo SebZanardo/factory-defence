@@ -36,7 +36,7 @@ void place_building(BuildingType type, int cell, Direction dir) {
         if (!inside_level(nx, ny)) return;
         new_cell = to_cell(nx, ny);
 
-        if (level.terrain[new_cell] != GROUND) return;
+        /*if (level.terrain[new_cell] != GROUND) return;*/
         if (level.placement[new_cell] != -1) return;
     }
 

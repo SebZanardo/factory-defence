@@ -31,6 +31,7 @@ int main(void) {
         printf("ERROR: Failed to load level\n");
         return 1;
     }
+
     place_path();
 
     Color colour;
@@ -98,7 +99,7 @@ int main(void) {
                         colour = BLUE;
                         break;
                     case PATH:
-                        colour = MAGENTA;
+                        colour = WHITE;
                         break;
                     case PATH_INPUT:
                         colour = RED;
