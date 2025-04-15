@@ -2,7 +2,6 @@
 #include "level.h"
 #include "building.h"
 
-
 Plan building_plan[] = {
     {(Vector2[]){{0, 0}}, 1},
     {(Vector2[]){{0, 0}}, 1},
@@ -14,8 +13,8 @@ Plan building_plan[] = {
 };
 
 
-// TODO: Rotation
 void place_building(BuildingType type, int cell, Direction dir) {
+
     // Check if can be placed
     int x, y;
     to_coord(cell, &x, &y);
@@ -23,6 +22,14 @@ void place_building(BuildingType type, int cell, Direction dir) {
     for (int i = 0; i < building_plan[type].size; i++) {
         ox = building_plan[type].plan[i].x;
         oy = building_plan[type].plan[i].y;
+
+        //Rotate plan 90 degrees dir times
+        int temp = 0;
+        for (int j=0; j<dir; j++) {
+            temp = ox;
+            ox = oy;
+            oy = -temp;
+        }
 
         nx = x + ox;
         ny = y + oy;
@@ -45,6 +52,15 @@ void place_building(BuildingType type, int cell, Direction dir) {
     for (int i = 0; i < building_plan[type].size; i++) {
         ox = building_plan[type].plan[i].x;
         oy = building_plan[type].plan[i].y;
+
+        //Rotate plan 90 degrees dir times
+        int temp = 0;
+        for (int j=0; j<dir; j++) {
+            temp = ox;
+            ox = oy;
+            oy = -temp;
+        }
+
         new_cell = to_cell(x + ox, y + oy);
 
         level.placement[new_cell] = index;
@@ -65,6 +81,16 @@ void delete_building(int cell) {
     for (int i = 0; i < building_plan[type].size; i++) {
         ox = building_plan[type].plan[i].x;
         oy = building_plan[type].plan[i].y;
+
+        int dir = level.buildings[index].dir;
+        //Rotate plan 90 degrees dir times
+        int temp = 0;
+        for (int j=0; j<dir; j++) {
+            temp = ox;
+            ox = oy;
+            oy = -temp;
+        }
+
         level.placement[to_cell(x + ox, y + oy)] = EMPTY_PLACEMENT;
     }
     level.buildings[index].type = NONE;
