@@ -4,6 +4,9 @@ rlgl.h
 libraylib.a
 lib/
 
+# Python
+env/
+
 # VScode
 .vscode/
 
