@@ -12,7 +12,6 @@ Plan building_plan[] = {
     {(Vector2[]){{-1, 0}, {-1, -1}, {0, 0}, {1, 0}, {1, 1}}, 5},
 };
 
-
 void place_building(BuildingType type, int cell, Direction dir) {
 
     // Check if can be placed
@@ -36,7 +35,7 @@ void place_building(BuildingType type, int cell, Direction dir) {
         if (!inside_level(nx, ny)) return;
         new_cell = to_cell(nx, ny);
 
-        /*if (level.terrain[new_cell] != GROUND) return;*/
+        if (level.terrain[new_cell] != GROUND && level.terrain[new_cell] != PATH) return;
         if (level.placement[new_cell] != -1) return;
     }
 
@@ -70,7 +69,7 @@ void place_building(BuildingType type, int cell, Direction dir) {
 
 void delete_building(int cell) {
     int index = level.placement[cell];
-    if (index == EMPTY_PLACEMENT) return;
+    if (index == EMPTY_PLACEMENT || level.terrain[cell] == PATH) return;
 
     // Get values for building
     int x = level.buildings[index].origin.x;
