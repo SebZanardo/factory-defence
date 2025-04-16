@@ -3,13 +3,14 @@
 #include "constants.h"
 #include "level.h"
 #include "building.h"
-
+#include "update.h"
 
 int main(void) {
     // Setting up the tick system
     // TODO: Make changing speed controls
     int frame_count = 0;
-    int tick_tps = 8;
+    int tick_count = 0;
+    int tick_tps = 6;
     SetTargetFPS(MAX_FPS);
 
     int selected = BELT;
@@ -66,13 +67,19 @@ int main(void) {
         }
 
         //UPDATE GAME
-        if (frame_count%(MAX_FPS/tick_tps)==0) {
-            for (int index = 0; index < level.MAX_CELLS; index++) {
-                if (level.buildings[index].type != NONE) {
-                    //Update the building by counting items down by one and applying effects.
-                }
+        if (tick_tps > MAX_FPS) {
+            for (int tick_number=0; tick_number<tick_tps/MAX_FPS; tick_number++) {
+                update(tick_count);
+                tick_count++;
             }
         }
+        else {
+            if (frame_count%(MAX_FPS/tick_tps)==0) {
+                update(tick_count);
+                tick_count++;
+            }
+        }
+
 
         // RENDER
         BeginDrawing();

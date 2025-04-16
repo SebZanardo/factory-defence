@@ -7,7 +7,6 @@
 
 #define EMPTY_PLACEMENT -1
 
-#define MAX_FPS 64
-#define RENDER_RATE 16
+#define MAX_FPS 60
 
 #endif /* CONSTANT_H */

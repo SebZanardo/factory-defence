@@ -28,16 +28,16 @@ if [ -z $1 ]; then
 
 elif [ $1 = $LINUX ]; then
     # https://github.com/raysan5/raylib/wiki/Working-on-GNU-Linux
-    cc src/main.c src/building.c src/level.c -lraylib -lGL -lm -lpthread -ldl -lrt -lX11 -o game.exe
+    cc src/main.c src/building.c src/level.c src/update.c -lraylib -lGL -lm -lpthread -ldl -lrt -lX11 -o game.exe
 
 elif [ $1 = $MACOS ]; then
     # https://github.com/raysan5/raylib/wiki/Working-on-macOS
-    eval cc src/main.c src/building.c src/level.c -framework IOKit -framework Cocoa -framework OpenGL $(pkg-config --libs --cflags raylib) -o game.exe
+    eval cc src/main.c src/building.c src/level.c src/update.c -framework IOKit -framework Cocoa -framework OpenGL $(pkg-config --libs --cflags raylib) -o game.exe
 
 elif [ $1 = $WINDOWS ]; then
     # https://github.com/raysan5/raylib/wiki/Working-on-Windows
     # + added -L lib
-    gcc src/main.c src/building.c src/level.c -L lib -lraylib -lgdi32 -lwinmm -o game.exe
+    gcc src/main.c src/building.c src/level.c src/update.c -L lib -lraylib -lgdi32 -lwinmm -o game.exe
 
 elif [ $1 = $WEB ]; then
     if [ -z "$EMSDK" ]; then
