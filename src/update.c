@@ -11,27 +11,21 @@ void belt_update(int index) {
 
     int next_index = get_next_building(index, level.buildings[index].dir);
 
-    printf("next index: %d",next_index);
-
     //Next building doesn't exist
     if (next_index == -1) {
         return;
     }
-
-    printf("level buildings type: %d, item no 3: %d",level.buildings[next_index].type,level.buildings[next_index].item_list[3]);
 
     //Next building isn't a belt or is full
     if (!(level.buildings[next_index].type == BELT && level.buildings[next_index].item_list[3] == NOTHING)) {
         return;
     }
 
-    printf("Made it");
-
     // Move first item of this building to last item of next.
     level.buildings[next_index].item_list[3] = level.buildings[index].item_list[0];
     level.buildings[index].item_list[0] = NOTHING;
     level.buildings[next_index].state = 1;
-    countdown_items(level.buildings[index]);
+    countdown_items(index);
     level.buildings[index].updated = true;
 
     //Since items have moved, checking the belt behind to see if it can move now.
@@ -61,7 +55,7 @@ void update(int tick) {
     for (int index = 0; index < level.MAX_CELLS; index++) {
         if (level.buildings[index].type == BELT) {
             if (level.buildings[index].updated = false) {
-                countdown_items(level.buildings[index]);
+                countdown_items(index);
                 level.buildings[index].updated = true;
             }
 

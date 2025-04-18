@@ -63,6 +63,6 @@ static const char *building_name[] = {
 void place_building(BuildingType type, int cell, Direction dir);
 void delete_building(int cell);
 int get_next_building(int index, Direction dir);
-void countdown_items(Building building);
+void countdown_items(int index);
 
 #endif  /* BUILDING_H */

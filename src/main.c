@@ -10,7 +10,7 @@ int main(void) {
     // TODO: Make changing speed controls
     int frame_count = 0;
     int tick_count = 0;
-    int tick_tps = 6;
+    int tick_tps = 1;
     SetTargetFPS(MAX_FPS);
 
     int selected = BELT;

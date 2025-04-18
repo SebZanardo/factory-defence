@@ -102,7 +102,7 @@ int get_next_building(int index, Direction dir) {
     Vector2 origin = level.buildings[index].origin;
     int x = origin.x;
     int y = origin.y;
-    printf(" %d,%d ",x,y);
+
     switch (dir)
     {
     case 0:
@@ -118,7 +118,6 @@ int get_next_building(int index, Direction dir) {
         x--;
         break;
     }
-    printf("-> %d,%d ",x,y);
     if (inside_level(x,y) == true) {
         return level.placement[to_cell(x,y)];
     }
@@ -127,9 +126,9 @@ int get_next_building(int index, Direction dir) {
     }
 }
 
-void countdown_items(Building building) {
+void countdown_items(int index) {
     int max;
-    if (building.state == -1) {
+    if (level.buildings[index].state == -1) {
         max=3;
     }
     else {
@@ -137,9 +136,9 @@ void countdown_items(Building building) {
     }
 
     for (int i=1; i<max; i++) {
-        if (building.item_list[i-1] == NOTHING) {
-            building.item_list[i-1] = building.item_list[i];
-            building.item_list[i] = NOTHING;
+        if (level.buildings[index].item_list[i-1] == NOTHING && level.buildings[index].item_list[i] != NOTHING) {
+            level.buildings[index].item_list[i-1] = level.buildings[index].item_list[i];
+            level.buildings[index].item_list[i] = NOTHING;
         }
     }
 }
