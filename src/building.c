@@ -64,7 +64,7 @@ void place_building(BuildingType type, int cell, Direction dir) {
 
         level.placement[new_cell] = index;
     }
-    level.buildings[index] = (Building) { (Vector2){x, y}, type, dir};
+    level.buildings[index] = (Building) { (Vector2){x, y}, type, dir, 0, 0};
 }
 
 void delete_building(int cell) {
@@ -95,30 +95,46 @@ void delete_building(int cell) {
     level.buildings[index].type = NONE;
 }
 
-//TODO: These functions will use the space of the itemlist in building but 8 is the standin 
-int get_number_of_nothings(Building building) {
-    int amount = 0;
-    for (int i=0; i<8; i++) {
-        if (building.item_list[i].type == NOTHING) {
-            amount += 1;
-        }
+//TODO: These functions will use the space of the itemlist in building but 4 is the standin
+int get_next_building(int index, Direction dir) {
+    int x, y;
+    to_coord(index, &x, &y);
+    switch (dir)
+    {
+    case 0:
+        y--;
+        break;
+    case 1:
+        x++;
+        break;
+    case 2:
+        y++;
+        break;
+    case 3:
+        x--;
+        break;
     }
-    return amount;
+    if (inside_level(x,y) == true) {
+        return to_cell(x,y);
+    }
+    else {
+        return -1;
+    }
 }
 
 void countdown_items(Building building) {
-    for (int i=0; i<8; i++) {
-        if (building.item_list[i].type != NOTHING && building.item_list[i].counter > 0) {
-            building.item_list[i].counter -= 1;
-        }
+    int max;
+    if (building.state == -1) {
+        max=3;
     }
-}
+    else {
+        max=4;
+    }
 
-void add_item(Building building, Item item) {
-    for (int i=0; i<8; i++) {
-        if (building.item_list[i].type == NOTHING) {
-            building.item_list[i] = item;
-            break;
+    for (int i=1; i<max; i++) {
+        if (building.item_list[i-1] == NOTHING) {
+            building.item_list[i-1] = building.item_list[i];
+            building.item_list[i] = NOTHING;
         }
     }
 }

@@ -31,18 +31,15 @@ typedef enum {
     IRON_ORE,
     COPPER,
     IRON,
-} ItemType;
-
-typedef struct {
-    ItemType type;
-    int counter; 
 } Item;
 
 typedef struct {
     Vector2 origin;
     BuildingType type;
     Direction dir;
-    Item item_list[8];
+    Item item_list[4];
+    bool updated;
+    int state;
 } Building;
 
 typedef struct {
@@ -65,6 +62,7 @@ static const char *building_name[] = {
 
 void place_building(BuildingType type, int cell, Direction dir);
 void delete_building(int cell);
-
+int get_next_building(int index, Direction dir);
+void countdown_items(Building building);
 
 #endif  /* BUILDING_H */
