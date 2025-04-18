@@ -55,7 +55,6 @@ int main(void) {
         if (IsKeyPressed(KEY_R)) {
             dir ++;
             if (dir >= 4) dir = 0;
-            printf("%d at %d.\n", dir, frame_count);
         }
 
         int cell_x = mouse_position.x/level.CELL_WIDTH;
@@ -64,6 +63,11 @@ int main(void) {
             int cell = to_cell(cell_x, cell_y);
             if (IsMouseButtonDown(0)) place_building(selected, cell, dir);
             if (IsMouseButtonDown(1)) delete_building(cell);
+            if (IsKeyDown(KEY_I)) {
+                for (int i=0;i<4;i++) {
+                    level.buildings[level.placement[cell]].item_list[i] = IRON;
+                }
+            }
         }
 
         //UPDATE GAME
@@ -153,6 +157,20 @@ int main(void) {
                         10,
                         BLUE
                     );
+                    if (level.buildings[level.placement[to_cell(x, y)]].type == BELT) {
+                        for (int i=0; i<4; i++) {
+                            if (level.buildings[level.placement[to_cell(x, y)]].item_list[i] == NOTHING) {
+                                continue;
+                            }
+                            DrawRectangle(
+                                x * level.CELL_WIDTH + (1+2*(i%2))*(level.CELL_HEIGHT)/5,
+                                y * level.CELL_HEIGHT + (1+2*(i/2))*(level.CELL_HEIGHT)/5,
+                                level.CELL_WIDTH/5,
+                                level.CELL_HEIGHT/5,
+                                YELLOW
+                            );
+                        }
+                    }
                 }
             }
         }

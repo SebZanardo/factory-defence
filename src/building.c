@@ -1,6 +1,7 @@
 #include "constants.h"
 #include "level.h"
 #include "building.h"
+#include <stdio.h>
 
 Plan building_plan[] = {
     {(Vector2[]){{0, 0}}, 1},
@@ -64,7 +65,7 @@ void place_building(BuildingType type, int cell, Direction dir) {
 
         level.placement[new_cell] = index;
     }
-    level.buildings[index] = (Building) { (Vector2){x, y}, type, dir, 0, 0};
+    level.buildings[index] = (Building) { (Vector2){x, y}, type, dir, {NOTHING,NOTHING,NOTHING,NOTHING}, 0, 0};
 }
 
 void delete_building(int cell) {
@@ -96,9 +97,12 @@ void delete_building(int cell) {
 }
 
 //TODO: These functions will use the space of the itemlist in building but 4 is the standin
+//NOTE: this assumes that the building is a 1x1 shape with a valid direction.
 int get_next_building(int index, Direction dir) {
-    int x, y;
-    to_coord(index, &x, &y);
+    Vector2 origin = level.buildings[index].origin;
+    int x = origin.x;
+    int y = origin.y;
+    printf(" %d,%d ",x,y);
     switch (dir)
     {
     case 0:
@@ -114,8 +118,9 @@ int get_next_building(int index, Direction dir) {
         x--;
         break;
     }
+    printf("-> %d,%d ",x,y);
     if (inside_level(x,y) == true) {
-        return to_cell(x,y);
+        return level.placement[to_cell(x,y)];
     }
     else {
         return -1;

@@ -11,21 +11,28 @@ void belt_update(int index) {
 
     int next_index = get_next_building(index, level.buildings[index].dir);
 
+    printf("next index: %d",next_index);
+
     //Next building doesn't exist
     if (next_index == -1) {
         return;
     }
+
+    printf("level buildings type: %d, item no 3: %d",level.buildings[next_index].type,level.buildings[next_index].item_list[3]);
 
     //Next building isn't a belt or is full
     if (!(level.buildings[next_index].type == BELT && level.buildings[next_index].item_list[3] == NOTHING)) {
         return;
     }
 
+    printf("Made it");
+
     // Move first item of this building to last item of next.
     level.buildings[next_index].item_list[3] = level.buildings[index].item_list[0];
     level.buildings[index].item_list[0] = NOTHING;
     level.buildings[next_index].state = 1;
     countdown_items(level.buildings[index]);
+    level.buildings[index].updated = true;
 
     //Since items have moved, checking the belt behind to see if it can move now.
     for (int i=0;i<4;i++) {
@@ -52,19 +59,18 @@ void update(int tick) {
 
     //Reset the updated boolean for all buildings
     for (int index = 0; index < level.MAX_CELLS; index++) {
-        Building building = level.buildings[index];
-        if (building.type == BELT) {
-            if (building.updated = false) {
-                countdown_items(building);
-                building.updated = true;
+        if (level.buildings[index].type == BELT) {
+            if (level.buildings[index].updated = false) {
+                countdown_items(level.buildings[index]);
+                level.buildings[index].updated = true;
             }
-            building.state = 0;
+
+            level.buildings[index].state = 0;
         }
-        if (building.type != NONE) {
-            building.updated = false;
+        if (level.buildings[index].type != NONE) {
+            level.buildings[index].updated = false;
         }
     }
-    printf("Tick %d", tick);
 }
 
 
