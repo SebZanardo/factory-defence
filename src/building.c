@@ -65,7 +65,7 @@ void place_building(BuildingType type, int cell, Direction dir) {
 
         level.placement[new_cell] = index;
     }
-    level.buildings[index] = (Building) { (Vector2){x, y}, type, dir, {NOTHING,NOTHING,NOTHING,NOTHING}, 0, 0};
+    level.buildings[index] = (Building) { (Vector2){x, y}, type, dir, {NOTHING,NOTHING,NOTHING,NOTHING}, 0};
 }
 
 void delete_building(int cell) {
@@ -96,7 +96,6 @@ void delete_building(int cell) {
     level.buildings[index].type = NONE;
 }
 
-//TODO: These functions will use the space of the itemlist in building but 4 is the standin
 //NOTE: this assumes that the building is a 1x1 shape with a valid direction.
 int get_next_building(int index, Direction dir) {
     Vector2 origin = level.buildings[index].origin;
@@ -126,16 +125,19 @@ int get_next_building(int index, Direction dir) {
     }
 }
 
-void countdown_items(int index) {
-    int max;
-    if (level.buildings[index].state == -1) {
-        max=3;
-    }
-    else {
-        max=4;
+//TODO: Make this applicable to different sized buildings (currently just 4)
+void move_items(int index, int next_index) {
+
+    //Moving the first item to the next building if possible
+    if (next_index != -1) {
+        if (level.buildings[next_index].item_list[3] == NOTHING && level.buildings[index].item_list[0] != NOTHING) {
+            level.buildings[next_index].item_list[3] = level.buildings[index].item_list[0];
+            level.buildings[index].item_list[0] = NOTHING;
+        }
     }
 
-    for (int i=1; i<max; i++) {
+    //Moving items in building.
+    for (int i=1; i<4; i++) {
         if (level.buildings[index].item_list[i-1] == NOTHING && level.buildings[index].item_list[i] != NOTHING) {
             level.buildings[index].item_list[i-1] = level.buildings[index].item_list[i];
             level.buildings[index].item_list[i] = NOTHING;
