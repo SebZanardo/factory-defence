@@ -60,18 +60,18 @@ void update(int tick) {
 
     //Reset the updated boolean for all buildings
     for (int index = 0; index < level.MAX_CELLS; index++) {
+        if (level.buildings[index].type == NONE) {
+            continue;
+        }
         if (level.buildings[index].type == BELT) {
-            if (level.buildings[index].updated = false) {
-                printf("countdown %d with state %d",index, level.buildings[index].state);
+            if (level.buildings[index].updated == false) {
                 countdown_items(index);
                 level.buildings[index].updated = true;
             }
 
             level.buildings[index].state = 0;
         }
-        if (level.buildings[index].type != NONE) {
-            level.buildings[index].updated = false;
-        }
+        level.buildings[index].updated = false;
     }
 }
 

@@ -63,27 +63,35 @@ int main(void) {
             int cell = to_cell(cell_x, cell_y);
             if (IsMouseButtonDown(0)) place_building(selected, cell, dir);
             if (IsMouseButtonDown(1)) delete_building(cell);
-            if (IsKeyDown(KEY_I)) {
-                for (int i=0;i<4;i++) {
-                    level.buildings[level.placement[cell]].item_list[i] = i+1;
-                }
+            if (IsKeyDown(KEY_ONE)) {
+                level.buildings[level.placement[cell]].item_list[0] = 1;  
+            }
+            if (IsKeyDown(KEY_TWO)) {
+                level.buildings[level.placement[cell]].item_list[1] = 2;  
+            }
+            if (IsKeyDown(KEY_THREE)) {
+                level.buildings[level.placement[cell]].item_list[2] = 3;  
+            }
+            if (IsKeyDown(KEY_FOUR)) {
+                level.buildings[level.placement[cell]].item_list[3] = 4;  
             }
         }
 
         //UPDATE GAME
-        if (tick_tps > MAX_FPS) {
-            for (int tick_number=0; tick_number<tick_tps/MAX_FPS; tick_number++) {
-                update(tick_count);
-                tick_count++;
+        if (!IsKeyDown(KEY_LEFT_SHIFT)){
+            if (tick_tps > MAX_FPS) {
+                for (int tick_number=0; tick_number<tick_tps/MAX_FPS; tick_number++) {
+                    update(tick_count);
+                    tick_count++;
+                }
+            }
+            else {
+                if (frame_count%(MAX_FPS/tick_tps)==0) {
+                    update(tick_count);
+                    tick_count++;
+                }
             }
         }
-        else {
-            if (frame_count%(MAX_FPS/tick_tps)==0) {
-                update(tick_count);
-                tick_count++;
-            }
-        }
-
 
         // RENDER
         BeginDrawing();
