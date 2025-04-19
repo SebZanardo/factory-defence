@@ -65,7 +65,7 @@ int main(void) {
             if (IsMouseButtonDown(1)) delete_building(cell);
             if (IsKeyDown(KEY_I)) {
                 for (int i=0;i<4;i++) {
-                    level.buildings[level.placement[cell]].item_list[i] = IRON;
+                    level.buildings[level.placement[cell]].item_list[i] = i+1;
                 }
             }
         }
@@ -162,12 +162,13 @@ int main(void) {
                             if (level.buildings[level.placement[to_cell(x, y)]].item_list[i] == NOTHING) {
                                 continue;
                             }
+                            Color colour_list[5] = {WHITE,DARKGRAY,MAROON,YELLOW,LIGHTGRAY};
                             DrawRectangle(
                                 x * level.CELL_WIDTH + (1+2*(i%2))*(level.CELL_HEIGHT)/5,
                                 y * level.CELL_HEIGHT + (1+2*(i/2))*(level.CELL_HEIGHT)/5,
                                 level.CELL_WIDTH/5,
                                 level.CELL_HEIGHT/5,
-                                YELLOW
+                                colour_list[level.buildings[level.placement[to_cell(x, y)]].item_list[i]]
                             );
                         }
                     }

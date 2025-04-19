@@ -9,24 +9,31 @@ void belt_update(int index) {
         return;
     }
 
-    int next_index = get_next_building(index, level.buildings[index].dir);
 
-    //Next building doesn't exist
-    if (next_index == -1) {
-        return;
+    if (level.buildings[index].item_list[0] == NOTHING) {
+        countdown_items(index);
+        level.buildings[index].updated = true;
     }
+    else {
+        int next_index = get_next_building(index, level.buildings[index].dir);
 
-    //Next building isn't a belt or is full
-    if (!(level.buildings[next_index].type == BELT && level.buildings[next_index].item_list[3] == NOTHING)) {
-        return;
+        //Next building doesn't exist
+        if (next_index == -1) {
+            return;
+        }
+    
+        //Next building isn't a belt or is full at last position.
+        if (!(level.buildings[next_index].type == BELT && level.buildings[next_index].item_list[3] == NOTHING)) {
+            return;
+        }
+    
+        // Move first item of this building to last item of next.
+        level.buildings[next_index].item_list[3] = level.buildings[index].item_list[0];
+        level.buildings[index].item_list[0] = NOTHING;
+        level.buildings[next_index].state = 1;
+        countdown_items(index);
+        level.buildings[index].updated = true;
     }
-
-    // Move first item of this building to last item of next.
-    level.buildings[next_index].item_list[3] = level.buildings[index].item_list[0];
-    level.buildings[index].item_list[0] = NOTHING;
-    level.buildings[next_index].state = 1;
-    countdown_items(index);
-    level.buildings[index].updated = true;
 
     //Since items have moved, checking the belt behind to see if it can move now.
     for (int i=0;i<4;i++) {
@@ -55,6 +62,7 @@ void update(int tick) {
     for (int index = 0; index < level.MAX_CELLS; index++) {
         if (level.buildings[index].type == BELT) {
             if (level.buildings[index].updated = false) {
+                printf("countdown %d with state %d",index, level.buildings[index].state);
                 countdown_items(index);
                 level.buildings[index].updated = true;
             }
