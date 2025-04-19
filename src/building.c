@@ -65,7 +65,7 @@ void place_building(BuildingType type, int cell, Direction dir) {
 
         level.placement[new_cell] = index;
     }
-    level.buildings[index] = (Building) { (Vector2){x, y}, type, dir, {NOTHING,NOTHING,NOTHING,NOTHING}, 0};
+    level.buildings[index] = (Building) { (Vector2){x, y}, type, dir, {NOTHING,NOTHING,NOTHING,NOTHING}, 0, 0};
 }
 
 void delete_building(int cell) {
@@ -144,4 +144,3 @@ void move_items(int index, int next_index) {
         }
     }
 }
-

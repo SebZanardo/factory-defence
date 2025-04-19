@@ -23,11 +23,28 @@ void find_belt(int index) {
         return;
     }
 
+    //Loop detection
+    if (level.buildings[next_index].state == 2) {
+        move_belt(index,next_index);
+    }
+
+    if (level.buildings[next_index].state == 1) {
+        for(int i=0;i<4;i++) {
+            if (level.buildings[index].item_list[i] == NOTHING) {
+                move_belt(index,next_index);
+            }
+        }
+    }
+
+    level.buildings[index].state++;
     find_belt(next_index);
 
 }
 
 void move_belt(int index, int next_index) {
+    if (level.buildings[index].updated == true) {
+        return;
+    }
     move_items(index, next_index);
     level.buildings[index].updated = true;
     
@@ -59,9 +76,9 @@ void update(int tick) {
         if (level.buildings[index].type == NONE) {
             continue;
         }
+        if (level.buildings[index].type == BELT) {
+            level.buildings[index].state = 0;
+        }
         level.buildings[index].updated = false;
     }
-    printf("tick");
 }
-
-

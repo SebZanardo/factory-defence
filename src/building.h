@@ -39,6 +39,7 @@ typedef struct {
     Direction dir;
     Item item_list[4];
     bool updated;
+    int state;
 } Building;
 
 typedef struct {
