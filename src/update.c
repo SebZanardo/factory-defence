@@ -9,29 +9,29 @@ void find_belt(int index) {
         return;
     }
 
-    int next_index = get_next_building(index, level.buildings[index].dir);
+    int next_index = level.buildings[index].outputs[0];
 
     //Next building doesn't exist
     if (next_index == -1) {
-        move_belt(index,-1);
+        move_belt(index);
         return;
     }
 
     //Next building isn't a belt
     if (level.buildings[next_index].type != BELT) {
-        move_belt(index,-1);
+        move_belt(index);
         return;
     }
 
     //Loop detection
     if (level.buildings[next_index].state == 2) {
-        move_belt(index,next_index);
+        move_belt(index);
     }
 
     if (level.buildings[next_index].state == 1) {
         for(int i=0;i<4;i++) {
             if (level.buildings[index].item_list[i] == NOTHING) {
-                move_belt(index,next_index);
+                move_belt(index);
             }
         }
     }
@@ -41,21 +41,21 @@ void find_belt(int index) {
 
 }
 
-void move_belt(int index, int next_index) {
+void move_belt(int index) {
     if (level.buildings[index].updated == true) {
         return;
     }
-    move_items(index, next_index);
+    move_items(index, level.buildings[index].outputs[0]);
     level.buildings[index].updated = true;
     
     //Get the belt behind this.
-    for (int i=0;i<4;i++) {
-        int target_index = get_next_building(index,i);
-        if (target_index == -1) {
-            continue;
+    for (int i=0;i<MAX_BUILDING_SIZE*2+2;i++) {
+        int target = level.buildings[index].inputs[i];
+        if (target == -1) {
+            break;
         }
-        if (level.buildings[target_index].type == BELT && index == get_next_building(target_index, level.buildings[target_index].dir)) {
-            move_belt(target_index,index);
+        if (level.buildings[target].type == BELT) {
+            move_belt(target);
         }
     }
 }

@@ -9,4 +9,6 @@
 
 #define MAX_FPS 60
 
+#define MAX_BUILDING_SIZE 9
+
 #endif /* CONSTANT_H */

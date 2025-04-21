@@ -3,7 +3,7 @@
 
 void find_belt(int index);
 
-void move_belt(int index, int next_index);
+void move_belt(int index);
 
 void update(int tick);
 
