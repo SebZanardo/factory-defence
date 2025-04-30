@@ -115,7 +115,7 @@ int main(void) {
                         colour = (x + y) % 2 == 0 ? GRAY : DARKGRAY;
                         break;
                     case WATER:
-                        colour = BLUE;
+                        colour = (Color){50,105,255,255};
                         break;
                     case PATH:
                         colour = WHITE;
